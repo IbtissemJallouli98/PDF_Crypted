@@ -35,7 +35,12 @@ public with sharing class TB2SI_ProtectedInvoicePdfQueueable implements Queueabl
     private void generateAndProtect() {
         try {
             Facture__c facture = [
-                SELECT Id, Name, Protected_PDF_Status__c
+                SELECT Id, Name, Protected_PDF_Status__c,
+                    Client__r.Name,
+                    Client__r.Procurement_Main_Contact__c,
+                    Client__r.Procurement_Main_Contact__r.Name,
+                    Client__r.Procurement_Main_Contact__r.Email,
+                    Client__r.Procurement_Main_Contact__r.HasOptedOutOfEmail
                 FROM Facture__c
                 WHERE Id = :factureId
                 WITH USER_MODE
@@ -68,6 +73,8 @@ public with sharing class TB2SI_ProtectedInvoicePdfQueueable implements Queueabl
             );
             insert version;
 
+            sendPasswordEmail(facture, userPassword);
+
             ContentVersion savedVersion = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :version.Id LIMIT 1];
             facture.Protected_PDF_Status__c = 'Succeeded';
             facture.Protected_PDF_File_Id__c = savedVersion.ContentDocumentId;
@@ -76,6 +83,37 @@ public with sharing class TB2SI_ProtectedInvoicePdfQueueable implements Queueabl
             Database.update(facture, AccessLevel.USER_MODE);
         } catch (Exception e) {
             markFailed(e);
+        }
+    }
+
+    private static void sendPasswordEmail(Facture__c facture, String userPassword) {
+        Contact mainContact = facture.Client__r == null
+            ? null
+            : facture.Client__r.Procurement_Main_Contact__r;
+        if (mainContact == null || String.isBlank(mainContact.Email)) {
+            throw new PdfGenerationException('Le compte de la facture n’a pas de contact principal avec une adresse email.');
+        }
+        if (mainContact.HasOptedOutOfEmail) {
+            throw new PdfGenerationException('Le contact principal du compte refuse les emails.');
+        }
+
+        Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+        email.setToAddresses(new List<String>{mainContact.Email});
+        email.setSubject('Mot de passe du PDF protégé - ' + facture.Name);
+        email.setPlainTextBody(
+            'Bonjour,' + '\n\n' +
+            'Le PDF protégé de la facture ' + facture.Name + ' est disponible dans Salesforce.' + '\n' +
+            'Mot de passe d’ouverture : ' + userPassword + '\n\n' +
+            'Ce mot de passe est confidentiel. Ne le partagez pas.'
+        );
+        email.setSaveAsActivity(false);
+
+        Messaging.SendEmailResult[] results = Messaging.sendEmail(
+            new List<Messaging.Email>{email},
+            false
+        );
+        if (results.isEmpty() || !results[0].isSuccess()) {
+            throw new PdfGenerationException('L’email contenant le mot de passe n’a pas pu être envoyé.');
         }
     }
 

@@ -4,11 +4,22 @@ private class TB2SI_ProtectedInvoicePdfTest {
     static void setupData() {
         PermissionSet permissions = [SELECT Id FROM PermissionSet WHERE Name = 'TB2SI_ProtectedInvoicePdf' LIMIT 1];
         System.runAs(new User(Id = UserInfo.getUserId())) {
-            insert new PermissionSetAssignment(AssigneeId = UserInfo.getUserId(), PermissionSetId = permissions.Id);
+            if ([SELECT COUNT() FROM PermissionSetAssignment
+                 WHERE AssigneeId = :UserInfo.getUserId() AND PermissionSetId = :permissions.Id] == 0) {
+                insert new PermissionSetAssignment(AssigneeId = UserInfo.getUserId(), PermissionSetId = permissions.Id);
+            }
         }
 
         Account client = new Account(Name = 'Client facture test');
         insert client;
+        Contact mainContact = new Contact(
+            AccountId = client.Id,
+            LastName = 'Contact facture test',
+            Email = 'protected-pdf-recipient@example.test'
+        );
+        insert mainContact;
+        client.Procurement_Main_Contact__c = mainContact.Id;
+        update client;
         Facture__c facture = new Facture__c(
             Client__c = client.Id,
             Date_facture__c = Date.newInstance(2026, 9, 21),
@@ -57,6 +68,7 @@ private class TB2SI_ProtectedInvoicePdfTest {
         System.assertEquals(1, links.size());
         System.assertEquals(facture.Id, links[0].LinkedEntityId);
         System.assert(links[0].ContentDocument.LatestPublishedVersion.PathOnClient.endsWith('.pdf'));
+
     }
 
     @IsTest

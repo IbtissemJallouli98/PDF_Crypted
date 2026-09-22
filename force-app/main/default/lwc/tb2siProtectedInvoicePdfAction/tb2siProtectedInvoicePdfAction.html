@@ -5,7 +5,7 @@
         </template>
         <p>
             Un PDF est généré depuis cette facture, chiffré en AES-256, puis enregistré dans Fichiers.
-            Le mot de passe d’ouverture n’est pas stocké dans Salesforce et devra être remis par un canal séparé configuré.
+            Le mot de passe d’ouverture n’est pas stocké dans Salesforce. Il sera envoyé par email au contact principal du compte client.
         </p>
         <div slot="footer">
             <lightning-button label="Annuler" onclick={handleCancel} disabled={isRunning}></lightning-button>
