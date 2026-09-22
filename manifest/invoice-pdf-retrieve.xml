@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Facture__c</members>
+        <members>Ligne_de_facture__c</members>
+        <name>CustomObject</name>
+    </types>
+    <types>
+        <members>YS_DataTestFactory</members>
+        <members>YS_INVOCABLE_GetSignedDocument</members>
+        <members>YS_INVOCABLE_UploadDocument</members>
+        <members>YS_INVOCABLE_VisualForceToPDF</members>
+        <members>YS_MultipartUtil</members>
+        <members>YS_Service</members>
+        <members>YS_Utils</members>
+        <members>DisplayPDFController</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>YS_INVOCABLE_GetSignedDocument_Test</members>
+        <members>YS_INVOCABLE_UploadDocument_Test</members>
+        <members>YS_INVOCABLE_VisualForceToPDF_Test</members>
+        <members>YS_MultipartUtil_Test</members>
+        <members>YS_Service_Test</members>
+        <members>YS_Utils_Test</members>
+        <members>DisplayPDFController_Test</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>renderAsPdf</members>
+        <members>YS_FakeDocumentEn</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>Facture_Record_Page</members>
+        <name>FlexiPage</name>
+    </types>
+    <types>
+        <members>Facture__c-Facture Layout</members>
+        <name>Layout</name>
+    </types>
+    <version>67.0</version>
+</Package>

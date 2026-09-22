@@ -1,0 +1,67 @@
+<apex:page controller="TB2SI_ProtectedInvoicePdfPageController" renderAs="pdf" showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false" applyHtmlTag="true">
+    <head>
+        <style>
+            @page { size: A4; margin: 18mm 14mm 18mm 14mm; }
+            body { font-family: Arial, sans-serif; color: #1f2937; font-size: 10pt; }
+            h1 { color: #16324f; font-size: 22pt; margin: 0; }
+            h2 { color: #16324f; font-size: 13pt; margin: 22px 0 8px; }
+            .header { border-bottom: 2px solid #16324f; padding-bottom: 12px; margin-bottom: 20px; }
+            .meta { width: 100%; }
+            .meta td { vertical-align: top; width: 50%; }
+            .label { color: #64748b; font-size: 8pt; text-transform: uppercase; }
+            .value { font-size: 11pt; margin-bottom: 7px; }
+            table.lines { width: 100%; border-collapse: collapse; }
+            table.lines th { background: #16324f; color: white; padding: 7px; text-align: left; }
+            table.lines td { border-bottom: 1px solid #dbe3ec; padding: 7px; }
+            .number { text-align: right; }
+            .totals { width: 42%; margin-left: 58%; margin-top: 14px; border-collapse: collapse; }
+            .totals td { padding: 5px; }
+            .grand-total { border-top: 2px solid #16324f; font-size: 12pt; font-weight: bold; }
+            .empty { color: #64748b; font-style: italic; }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Facture {!facture.Name}</h1>
+        </div>
+        <table class="meta">
+            <tr>
+                <td>
+                    <div class="label">Client</div>
+                    <div class="value">{!facture.Client__r.Name}</div>
+                </td>
+                <td>
+                    <div class="label">Date de facture</div>
+                    <div class="value"><apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!facture.Date_facture__c}" /></apex:outputText></div>
+                    <div class="label">Date d’échéance</div>
+                    <div class="value"><apex:outputText value="{0,date,dd/MM/yyyy}"><apex:param value="{!facture.Date_echeance__c}" /></apex:outputText></div>
+                </td>
+            </tr>
+        </table>
+        <h2>Détail</h2>
+        <apex:outputPanel rendered="{!lines.size > 0}">
+            <table class="lines">
+                <tr>
+                    <th>Description</th><th class="number">Quantité</th><th class="number">Prix unitaire HT</th><th class="number">TVA</th><th class="number">Total TTC</th>
+                </tr>
+                <apex:repeat value="{!lines}" var="line">
+                    <tr>
+                        <td>{!line.description}</td>
+                        <td class="number"><apex:outputText value="{0,number,##0.##}"><apex:param value="{!line.quantity}" /></apex:outputText></td>
+                        <td class="number"><apex:outputText value="{0,number,##0.00}"><apex:param value="{!line.unitPrice}" /></apex:outputText> €</td>
+                        <td class="number">{!line.tvaLabel}</td>
+                        <td class="number"><apex:outputText value="{0,number,##0.00}"><apex:param value="{!line.totalTtc}" /></apex:outputText> €</td>
+                    </tr>
+                </apex:repeat>
+            </table>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!lines.size == 0}">
+            <div class="empty">Aucune ligne de facture.</div>
+        </apex:outputPanel>
+        <table class="totals">
+            <tr><td>Total HT</td><td class="number"><apex:outputText value="{0,number,##0.00}"><apex:param value="{!totalHt}" /></apex:outputText> €</td></tr>
+            <tr><td>Total TVA</td><td class="number"><apex:outputText value="{0,number,##0.00}"><apex:param value="{!totalTva}" /></apex:outputText> €</td></tr>
+            <tr class="grand-total"><td>Total TTC</td><td class="number"><apex:outputText value="{0,number,##0.00}"><apex:param value="{!totalTtc}" /></apex:outputText> €</td></tr>
+        </table>
+    </body>
+</apex:page>

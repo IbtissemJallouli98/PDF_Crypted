@@ -1,0 +1,15 @@
+<template>
+    <lightning-quick-action-panel header="Générer le PDF protégé">
+        <template lwc:if={isRunning}>
+            <lightning-spinner alternative-text="Planification en cours"></lightning-spinner>
+        </template>
+        <p>
+            Un PDF est généré depuis cette facture, chiffré en AES-256, puis enregistré dans Fichiers.
+            Le mot de passe d’ouverture n’est pas stocké dans Salesforce et devra être remis par un canal séparé configuré.
+        </p>
+        <div slot="footer">
+            <lightning-button label="Annuler" onclick={handleCancel} disabled={isRunning}></lightning-button>
+            <lightning-button variant="brand" label="Lancer la génération" onclick={handleGenerate} disabled={isRunning}></lightning-button>
+        </div>
+    </lightning-quick-action-panel>
+</template>

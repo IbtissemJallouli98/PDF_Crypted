@@ -1,0 +1,144 @@
+<!--
+  @description       : Fake Document (English) used for demo purposes. With smart anchor for the signature.
+  @author            : Simon Persenot
+  @group             : 
+  @last modified on  : 22-05-2024
+  @last modified by  : Simon Persenot
+-->
+<apex:page showHeader="false" sidebar="false" applyBodyTag="false" applyHtmlTag="false" standardStylesheets="false" renderAs="pdf">
+    <apex:stylesheet value="{!URLFOR($Resource.YS_StyleAssets, 'stylesheet.css')}" />
+    <head>
+        <style>
+            @media print {
+                .pagebreak {
+                    clear: both;
+                    page-break-after: always;
+                }
+                
+                .nobreak {
+                    page-break-inside: avoid;
+                }
+            }
+
+            @page {
+                margin-top: 232px;
+                margin-right: 0;
+                margin-bottom: 80px; /* 93px  + 38px blank before */
+                margin-left: 0;
+                @top-center {
+                    content: element(header);
+                }
+                @bottom-left {
+                    content: element(footer);
+                }
+            }
+            div.header-wrapper {
+                position: running(header);
+            }
+            div.footer-wrapper {
+                position: running(footer);
+            }
+
+            .pagenumber:before {
+                content: counter(page);
+            }
+            .pagecount:before {
+                content: counter(pages);
+            }
+        </style>
+    </head>
+    <body>
+        <!-- ======================================================= -->
+        <!-- === HEADER ============================================ -->
+        <!-- ======================================================= -->
+        <div class="header-wrapper">
+            <div class="header">
+                <img class="header-logo"  src="{!URLFOR($Resource.YS_StyleAssets, 'images/logotype-nightblue.png')}"  alt="Yousign Logo"/>
+            </div>
+        </div>
+        <!-- ======================================================= -->
+        <!-- === FOOTER ============================================ -->
+        <!-- ======================================================= -->
+        <div class="footer-wrapper">
+            <div class="footer">
+                <div class="footer-page-number">
+                    <p><span class="pagenumber"></span>/<span class="pagecount"></span></p>
+                </div>
+                <div class="footer-copyright">
+                    <p>yousign.com</p>
+                </div>
+            </div>
+        </div>
+        <!-- ======================================================= -->
+        <!-- === MAIN CONTENT ====================================== -->
+        <!-- ======================================================= -->
+        <div class="content page-wrapper">
+            <div class="main-content">
+                <!-- === Front Page ====================================== -->
+                <div id="title"></div>
+                <div id="front-page" class="section no-mt">
+                    <div>
+                        <h1>Test Document</h1>
+                        <p class="highlight">Generated from Visualforce for test purposes only</p>
+                        <p>
+                            This fake document is made available to you so that you can test Yousign's Electronic Signature solution. It is a specimen.<br/>
+                            Yousign makes this specimen available to the user for the sole purpose of enabling him to test the qualified electronic signature solution.
+                            Yousign declines all responsibility for any action or omission related to the use of this template or in connection with it.
+                        </p>
+                    </div>
+                </div>
+                <div class="pagebreak"></div>
+                <!-- === Lorem Ipsum Page 1 ====================================== -->
+                <div class="page-title" style="background-image: url({!URLFOR($Resource.YS_StyleAssets, 'images/circle-pastelpink.png')})">
+                    <h2>Lorem Ipsum</h2>
+                </div>
+                <div id="loremipsum-1" class="section no-mt">
+                    <div>
+                        <p class="mb-30">
+                            <span class="bold">Orem ipsum:</span> dolor sit amet consectetur adipiscing elit. Integer ullamcorper imperdiet nisl ut auctor.
+                            Ut porta, ante iaculis varius consequat, odio risus fringilla est.
+                        </p>
+                        <p class="mb-30">
+                            <span class="bold">Donec est metus:</span> gravida ac efficitur sed, convallis id mi.
+                            Etiam semper erat nec ex laoreet, at aliquam massa semper. Aenean ac lectus ac magna fringilla congue. Integer sit amet ultrices diam.
+                            Ut pellentesque, metus quis euismod suscipit, nibh nibh mollis nunc, a maximus dolor tellus nec velit.
+                            Integer ultricies a nisi sed rhoncus. Cras vestibulum volutpat ligula, sit amet cursus turpis mattis sed.
+                            Suspendisse felis felis, aliquet a mi in, egestas rutrum risus. Donec lacinia hendrerit neque ornare placerat.
+                            Duis pulvinar nec est eu porta. Nunc tincidunt massa ut eleifend dictum.
+                            Phasellus facilisis, nisl non lacinia luctus, velit eros tincidunt purus, ac scelerisque ligula velit vitae lacus.
+                            Sed commodo eu leo scelerisque rutrum. Sed cursus nisl ultrices nisi pellentesque gravida. Pellentesque et ante odio.
+                        </p>
+                        <p class="mb-30">
+                            <span class="bold">Eu maximus:</span> tellus tellus ut lacus mauris consequat sem semper odio gravida elementum.
+                            Suspendisse sem dui, lobortis nec imperdiet sed, elementum non orci. Quisque vel nibh pellentesque, sollicitudin massa vitae, maximus neque.
+                            Pellentesque maximus nibh id turpis vestibulum, eget ornare nibh lacinia. Aliquam scelerisque finibus est sit amet sodale.
+                        </p>
+                    </div>
+                </div>
+                <div class="pagebreak"></div>
+                <!-- === Lorem Ipsum Page 2 + Signature ====================================== -->
+                <div class="page-title" style="background-image: url({!URLFOR($Resource.YS_StyleAssets, 'images/circle-pastelpink.png')})">
+                    <h2>Lorem Ipsum</h2>
+                </div>
+                <div id="loremipsum-signature" class="section no-mt">
+                    <div>
+                        <p class="mb-30">
+                            Eu maximus tellus tellus ut lacus. Mauris consequat sem semper odio gravida elementum.
+                            Suspendisse sem dui, lobortis nec imperdiet sed, elementum non orci. Quisque vel nibh pellentesque, sollicitudin massa vitae, maximus neque.
+                        </p>
+                        <p class="mb-30">
+                            Pellentesque maximus nibh id turpis vestibulum, eget ornare nibh lacinia. Aliquam scelerisque finibus est sit amet sodales…
+                        </p>
+                    </div>
+                    <!-- === SIGNATURE ====================================== -->
+                    <div id="signature" class="fl-100 nobreak">
+                        <div id="signature-wrapper">
+                            <span id="signature-anchor">{{s1|signature|190|64}}</span>
+                            <div style="position: relative;">Signature</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</apex:page>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Accès au lancement et au suivi des PDF de factures protégés.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Facture__c.Protected_PDF_Error__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Facture__c.Protected_PDF_File_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Facture__c.Protected_PDF_Generated_At__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Facture__c.Protected_PDF_Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Facture__c.Date_facture__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Facture__c.Date_echeance__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Ligne_de_facture__c.TVA__c</field><readable>true</readable></fieldPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Facture__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Ligne_de_facture__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <classAccesses><apexClass>TB2SI_ProtectedInvoicePdfController</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>TB2SI_ProtectedInvoicePdfPageController</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>TB2SI_ProtectedInvoicePdfClient</apexClass><enabled>true</enabled></classAccesses>
+    <classAccesses><apexClass>TB2SI_ProtectedInvoicePdfQueueable</apexClass><enabled>true</enabled></classAccesses>
+    <pageAccesses><apexPage>TB2SI_ProtectedInvoicePdf</apexPage><enabled>true</enabled></pageAccesses>
+    <externalCredentialPrincipalAccesses>
+        <enabled>true</enabled>
+        <externalCredentialPrincipal>TB2SI_PdfEncryption_EC-PDF Encryption Principal</externalCredentialPrincipal>
+    </externalCredentialPrincipalAccesses>
+    <label>TB2SI PDF facture protégé</label>
+</PermissionSet>
